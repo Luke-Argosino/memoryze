@@ -1,5 +1,6 @@
+import { useHistory } from "react-router-dom";
 
-const Home = () => {
+const Home = (props) => {
     return (
         <div>
 

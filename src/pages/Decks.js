@@ -1,8 +1,14 @@
+import { useHistory } from "react-router-dom";
 
-const Decks = () => {
+const Decks = (props) => {
+    const history = useHistory();
+    if (!props.user) {
+        history.push('/');
+    }
+
     return (
         <div>
-            
+            Hello
         </div>
     )
 }

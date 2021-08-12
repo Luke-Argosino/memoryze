@@ -1,13 +1,13 @@
 import './App.css';
 import Decks from './pages/Decks';
 import Home from './pages/Home';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Button } from '@material-ui/core';
-
-//hi
 
 firebase.initializeApp({
   apiKey: "AIzaSyAHXtjVi5seL3M7LyFM0nHvREh2RW9lLJQ",
@@ -25,30 +25,49 @@ const App = () => {
   const [user] = useAuthState(auth);
 
   return (
-    <div className="App">
-      <div className="Header">
-        <Header user={user} />
+    <Router>
+      <div className="App">
+        <div className="Header">
+          <Header user={user} />
+        </div>
+        <div className="Content">
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/decks">
+              <Decks user={user} />
+            </Route>
+          </Switch>
+        </div>
       </div>
-      <div>
-        {user ? <Decks />  : <SignIn auth={auth}/>}
-      </div>
-    </div>
+    </Router>
   );
 }
 
 const Header = (props) => {
+  const history = useHistory();
+  const onDeckClick = () => {
+    history.push('/decks');
+  }
+
   return (
     <h1>
       memoryze
-      {props.user? <SignOut /> : <SignIn />}
+      {props.user ? <SignOut /> : <SignIn user={props.user} />}
+      <Button
+        onClick={onDeckClick}
+      >
+        Decks
+      </Button>
     </h1>
   )
 }
 
 const SignIn = (props) => {
   const signInWithGoogle = () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
   }
   return (
       <div>
@@ -63,7 +82,7 @@ const SignIn = (props) => {
   )
 }
 
-const SignOut = () => {
+const SignOut = (props) => {
   return auth.currentUser && (
     <Button 
       onClick={() => auth.signOut()}
