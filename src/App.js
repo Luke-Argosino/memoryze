@@ -20,6 +20,14 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
+const Header = () => {
+  return (
+    <h1>
+      memoryze
+    </h1>
+  )
+}
+
 const App = () => {
   const [user] = useAuthState(auth);
 
@@ -33,14 +41,6 @@ const App = () => {
       </div>
     </div>
   );
-}
-
-const Header = () => {
-  return (
-    <h1>
-      memoryze
-    </h1>
-  )
 }
 
 const SignOut = () => {
