@@ -1,5 +1,6 @@
 import './App.css';
-import Decks from './pages/Decks'
+import Decks from './pages/Decks';
+import SignInPage from './pages/SignInPage';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
@@ -28,7 +29,7 @@ const App = () => {
         <Header />
       </div>
       <div>
-        {user ? <Decks /> && <SignOut /> : <SignIn auth={auth} />}
+        {user ? <Decks />  : <SignInPage auth={auth}/>}
       </div>
     </div>
   );
@@ -36,28 +37,9 @@ const App = () => {
 
 const Header = () => {
   return (
-  
     <h1>
       memoryze
     </h1>
-    
-  )
-}
-
-const SignIn = () => {
-  const signInWithGoogle = () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
-  } 
-
-  return (
-      <Button 
-        onClick={signInWithGoogle}
-        variant="contained"
-        color="white"
-        >
-        Sign in with Google
-      </Button>
   )
 }
 
