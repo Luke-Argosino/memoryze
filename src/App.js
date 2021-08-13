@@ -1,14 +1,13 @@
 import './App.css';
+import AddDeck from './pages/AddDeck';
 import Decks from './pages/Decks';
 import Home from './pages/Home';
 import Header from './components/Header';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { useHistory } from "react-router-dom";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Button } from '@material-ui/core';
 
 firebase.initializeApp({
   apiKey: "AIzaSyAHXtjVi5seL3M7LyFM0nHvREh2RW9lLJQ",
@@ -36,8 +35,11 @@ const App = () => {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route path="/decks">
+            <Route exact path="/decks">
               <Decks user={user} />
+            </Route>
+            <Route path="/decks/new_deck">
+              <AddDeck />
             </Route>
           </Switch>
         </div>

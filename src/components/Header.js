@@ -1,5 +1,5 @@
 import '../App.css';
-import './Header.css';
+
 import Decks from '../pages/Decks';
 import Home from '../pages/Home';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
@@ -46,23 +46,25 @@ const Header = (props) => {
   
     return (
       <div className={classes.Root}>
-        <ThemeProvider theme={customTheme}>
-        <AppBar position="static" color={"secondary"}>
-          <Toolbar>
-            <Typography variant ="h4" className={classes.title} color="#5f6d4f">
-              Memoryze
-            </Typography>
-            <div className="DecksButton">
-            <Button
-                onClick={onDeckClick}
-              >
-                Decks
-              </Button>
-              </div>
-              {props.user ? <SignOut auth={props.auth}/> : <SignIn user={props.user} auth={props.auth}/>}
-          </Toolbar> 
-        </AppBar>
-        </ThemeProvider>
+        <div className="Header">
+          <ThemeProvider theme={customTheme}>
+          <AppBar position="static" color={"secondary"}>
+            <Toolbar>
+              <Typography variant ="h4" className={classes.title} color="#5f6d4f">
+                Memoryze
+              </Typography>
+              <div className="DecksButton">
+              <Button
+                  onClick={onDeckClick}
+                >
+                  Decks
+                </Button>
+                </div>
+                {props.user ? <SignOut auth={props.auth}/> : <SignIn user={props.user} auth={props.auth}/>}
+            </Toolbar> 
+          </AppBar>
+          </ThemeProvider>
+        </div>
       </div>
     )
   }
