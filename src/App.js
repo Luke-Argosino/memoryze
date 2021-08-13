@@ -1,6 +1,7 @@
 import './App.css';
 import Decks from './pages/Decks';
 import Home from './pages/Home';
+import Header from './components/Header';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
 import firebase from 'firebase/app';
@@ -28,7 +29,7 @@ const App = () => {
     <Router>
       <div className="App">
         <div className="Header">
-          <Header user={user} />
+          <Header user={user} auth={auth}/>
         </div>
         <div className="Content">
           <Switch>
@@ -45,6 +46,7 @@ const App = () => {
   );
 }
 
+/*
 const Header = (props) => {
   const history = useHistory();
   const onDeckClick = () => {
@@ -73,8 +75,6 @@ const SignIn = (props) => {
       <div>
         <Button 
           onClick={signInWithGoogle}
-          variant="contained"
-          color="white"
           >
           Sign in with Google
         </Button>
@@ -86,12 +86,10 @@ const SignOut = (props) => {
   return auth.currentUser && (
     <Button 
       onClick={() => auth.signOut()}
-      variant="contained"
-      color="white"
       >
       Sign Out
     </Button>
   )
 }
-
+*/
 export default App;
