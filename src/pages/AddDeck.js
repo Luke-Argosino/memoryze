@@ -4,12 +4,8 @@ import { BiAddToQueue } from "react-icons/bi";
 import { VscDiffRemoved } from "react-icons/vsc";
 import { useState } from "react";
 import React from 'react';
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
 
-const AddDeck = () => {
+const AddDeck = (props) => {
     const [deckName, setDeckName] = useState("");
     const [cardCount, setCardCount] = useState(0);
     const [cards, setCards] = useState([
@@ -22,6 +18,7 @@ const AddDeck = () => {
             alert("Error: Deck name cannot be empty")
         } else {
             console.log("Card", cards);
+            props.firebase.database().ref('users/' + props.user.uid + "/" + deckName).set(cards);
         }
     }
 
@@ -59,6 +56,7 @@ const AddDeck = () => {
                     label="Deck Name"
                     margin="normal"
                     onChange={e => setDeckName(e.target.value)}
+                    inputProps={{ maxLength: 40 }}
                 />
                 {cards.map(card => (
                     <div key={card.cardNum}>

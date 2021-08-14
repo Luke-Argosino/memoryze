@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import Header from './components/Header';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import firebase from 'firebase/app';
-import 'firebase/firestore';
+import 'firebase/database';
 import 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -23,7 +23,6 @@ const firestore = firebase.firestore();
 
 const App = () => {
   const [user] = useAuthState(auth);
-
   return (
     <Router>
       <div className="App">
@@ -39,7 +38,7 @@ const App = () => {
               <Decks user={user} />
             </Route>
             <Route path="/decks/new_deck">
-              <AddDeck auth={auth} />
+              <AddDeck user={user} firebase={firebase} />
             </Route>
           </Switch>
         </div>
