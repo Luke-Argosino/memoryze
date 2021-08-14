@@ -39,7 +39,7 @@ const App = () => {
               <Decks user={user} />
             </Route>
             <Route path="/decks/new_deck">
-              <AddDeck />
+              <AddDeck auth={auth} />
             </Route>
           </Switch>
         </div>

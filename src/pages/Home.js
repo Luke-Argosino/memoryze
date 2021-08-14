@@ -1,9 +1,7 @@
-import { useHistory } from "react-router-dom";
-
 const Home = (props) => {
     return (
         <div className="Home">
-            A spaced repitition flash card web app.
+            A spaced repitition cloud-based flash card application.
         </div>
     )
 }

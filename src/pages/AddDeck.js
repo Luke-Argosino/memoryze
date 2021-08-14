@@ -4,17 +4,25 @@ import { BiAddToQueue } from "react-icons/bi";
 import { VscDiffRemoved } from "react-icons/vsc";
 import { useState } from "react";
 import React from 'react';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const AddDeck = () => {
-    const[cardCount, setCardCount] = useState(0);
+    const [deckName, setDeckName] = useState("");
+    const [cardCount, setCardCount] = useState(0);
     const [cards, setCards] = useState([
         {cardNum: cardCount, frontCard: '', backCard: ''},
     ]);
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Card", cards);
+        if (deckName === "") {
+            alert("Error: Deck name cannot be empty")
+        } else {
+            console.log("Card", cards);
+        }
     }
 
     const handleChangeInput = (cardNum, e) => {
@@ -24,27 +32,34 @@ const AddDeck = () => {
             }
             return i;
         })
-
         setCards(newCard);
-
     }
 
     const onAddClick = () => {
-        if (cardCount == 0) {
+        if (cardCount === 0) {
             setCardCount(cardCount + 1);
         } else {
             setCardCount(cardCount + 1);
-            setCards(cards => [...cards, {cardNum: cardCount, frontCard: '', backCard: ''}])
+            setCards(cards => [...cards, {cardNum: cardCount, frontCard: '', backCard: ''}]);
         }
     }
 
     const onRemoveClick = () => {
-        setCards(cards => cards.splice(0, cards.length-1));
+        if (cards.length > 1) {
+            setCards(cards => cards.splice(0, cards.length-1));
+        } else {
+            alert("Error: Cannot have 0 cards in deck");
+        }
     }
 
     return (
         <div className="AddDeck">
             <form className="FlashCardEntry" noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <TextField 
+                    label="Deck Name"
+                    margin="normal"
+                    onChange={e => setDeckName(e.target.value)}
+                />
                 {cards.map(card => (
                     <div key={card.cardNum}>
                         <Box display="flex" 
@@ -66,7 +81,7 @@ const AddDeck = () => {
                                     variant="outlined"
                                     value={card.frontCard}
                                     onChange={e => handleChangeInput(card.cardNum, e)}
-                                    inputProps={{ maxLength: 240 }}
+                                    inputProps={{ maxLength: 160 }}
                                     style= {{ width: 400 }}
                                 />
                             </div>
@@ -80,7 +95,7 @@ const AddDeck = () => {
                                     variant="outlined"
                                     value={card.backCard}
                                     onChange={e => handleChangeInput(card.cardNum, e)}
-                                    inputProps={{ maxLength: 240 }}
+                                    inputProps={{ maxLength: 160 }}
                                     style= {{ width: 400 }}
                                 />
                             </div>

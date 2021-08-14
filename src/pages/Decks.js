@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 const Decks = (props) => {
     const history = useHistory();
     if (!props.user) {
+        alert("Error: You are not signed in!");
         history.push('/');
     }
 
@@ -22,7 +23,6 @@ const AddDeckButton = () => {
     const onClick = () => {
         history.push('/decks/new_deck')
     }
-
     return (
         <div className="AddDeckButton">
             <Tooltip title="New Deck">
