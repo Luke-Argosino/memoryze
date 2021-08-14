@@ -6,14 +6,36 @@ import { useState } from "react";
 import React from 'react';
 
 const AddDeck = () => {
-    const [cards, setCards] = useState([]);
+    const[cardCount, setCardCount] = useState(0);
+    const [cards, setCards] = useState([
+        {cardNum: cardCount, frontCard: '', backCard: ''},
+    ]);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Card", cards);
+    }
+
+    const handleChangeInput = (cardNum, e) => {
+        const newCard = cards.map(i => {
+            if(cardNum === i.cardNum) {
+                i[e.target.name] = e.target.value;
+            }
+            return i;
+        })
+
+        setCards(newCard);
+
     }
 
     const onAddClick = () => {
-        setCards(cards => [...cards, <FlashCardEntry/>])
+        if (cardCount == 0) {
+            setCardCount(cardCount + 1);
+        } else {
+            setCardCount(cardCount + 1);
+            setCards(cards => [...cards, {cardNum: cardCount, frontCard: '', backCard: ''}])
+        }
     }
 
     const onRemoveClick = () => {
@@ -23,9 +45,47 @@ const AddDeck = () => {
     return (
         <div className="AddDeck">
             <form className="FlashCardEntry" noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <FlashCardEntry />
-                {cards.map((item,i) => (
-                    <div key={i}>{item}</div>
+                {cards.map(card => (
+                    <div key={card.cardNum}>
+                        <Box display="flex" 
+                            justifyContent="center" 
+                            bgcolor="#ece3c5" 
+                            marginLeft={43} 
+                            marginRight={43} 
+                            borderRadius={10} 
+                            marginBottom={2}
+                            border={4} 
+                            borderColor="#d5d5d5"
+                        >
+                            <div className="LeftCard">
+                                <TextField
+                                    name="frontCard"
+                                    label="Front Text"
+                                    multiline
+                                    rows={6}
+                                    variant="outlined"
+                                    value={card.frontCard}
+                                    onChange={e => handleChangeInput(card.cardNum, e)}
+                                    inputProps={{ maxLength: 240 }}
+                                    style= {{ width: 400 }}
+                                />
+                            </div>
+                            <div className="RightCard">
+                                <TextField
+                                    id="Test"
+                                    name="backCard"
+                                    label="Back Text"
+                                    multiline
+                                    rows={6}
+                                    variant="outlined"
+                                    value={card.backCard}
+                                    onChange={e => handleChangeInput(card.cardNum, e)}
+                                    inputProps={{ maxLength: 240 }}
+                                    style= {{ width: 400 }}
+                                />
+                            </div>
+                        </Box>            
+                    </div>
                 ))}
                 <Button id="CreateDeck"
                     type="submit"
@@ -42,8 +102,6 @@ const AddDeck = () => {
                             color='white'
                             size={50}
                         />
-                          
-
                     </Button>
                 </Tooltip>
                 <Tooltip title="Remove Card">
@@ -57,45 +115,6 @@ const AddDeck = () => {
                     </Button>
                 </Tooltip>
             </div>
-        </div>
-    )
-}
-
-const FlashCardEntry = () => {
-    return (
-        <div>
-            <Box display="flex" 
-                justifyContent="center" 
-                bgcolor="#ece3c5" 
-                marginLeft={43} 
-                marginRight={43} 
-                borderRadius={10} 
-                marginBottom={2}
-                border={4} 
-                borderColor="#d5d5d5"
-            >
-                <div className="LeftCard">
-                    <TextField
-                        label="Front Text"
-                        multiline
-                        rows={6}
-                        variant="outlined"
-                        inputProps={{ maxLength: 240 }}
-                        style= {{ width: 400 }}
-                    />
-                </div>
-                <div className="RightCard">
-                    <TextField
-                        id="Test"
-                        label="Back Text"
-                        multiline
-                        rows={6}
-                        variant="outlined"
-                        inputProps={{ maxLength: 240 }}
-                        style= {{ width: 400 }}
-                    />
-                </div>
-            </Box>
         </div>
     )
 }
