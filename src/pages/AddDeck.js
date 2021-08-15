@@ -2,6 +2,7 @@ import '../App.css'
 import { Box, Button, Tooltip, TextField } from "@material-ui/core";
 import { BiAddToQueue } from "react-icons/bi";
 import { VscDiffRemoved } from "react-icons/vsc";
+import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import React from 'react';
 
@@ -19,6 +20,7 @@ const AddDeck = (props) => {
         } else {
             console.log("Card", cards);
             props.firebase.database().ref('users/' + props.user.uid + "/" + deckName).set(cards);
+            history.push('/decks');
         }
     }
 

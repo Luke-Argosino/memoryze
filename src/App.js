@@ -35,7 +35,7 @@ const App = () => {
               <Home />
             </Route>
             <Route exact path="/decks">
-              <Decks user={user} />
+              <Decks user={user} firebase={firebase} />
             </Route>
             <Route path="/decks/new_deck">
               <AddDeck user={user} firebase={firebase} />
