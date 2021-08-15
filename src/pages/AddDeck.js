@@ -7,6 +7,7 @@ import { useState } from "react";
 import React from 'react';
 
 const AddDeck = (props) => {
+    const history = useHistory();
     const [deckName, setDeckName] = useState("");
     const [cardCount, setCardCount] = useState(0);
     const [cards, setCards] = useState([
