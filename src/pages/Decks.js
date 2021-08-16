@@ -2,12 +2,19 @@ import '../App.css'
 import { Button, Tooltip } from "@material-ui/core";
 import { BiAddToQueue } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
+import { useState } from 'react';
 
 const Decks = (props) => {
-    const history = useHistory();
+    const history = useHistory();    
+    const [data, setData] = useState([]);
     if (!props.user) {
-        alert("Error: You are not signed in!");
         history.push('/');
+    } else {
+        props.firebase.database().ref('users/' + props.user.uid + "/").get().then((objSnapshot) => {
+            console.log(objSnapshot.val());
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     return (

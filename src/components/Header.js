@@ -4,7 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import { Button } from '@material-ui/core';
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -18,14 +18,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   typography: {
     "fontFamily": ['"Montserrat"','Open Sans'].join(',')
   },
   palette: {
     secondary: {
       main: "#f7f0dc",
-      contrastText: "#5f6d4f"
     }
   }
 });
@@ -33,7 +32,11 @@ const customTheme = createMuiTheme({
 const Header = (props) => {
     const history = useHistory();
     const onDeckClick = () => {
-      history.push('/decks');
+      if (props.user) {
+        history.push('/decks');
+      } else {
+        alert("Error: You are not signed in!");
+      }
     }
 
     const classes = (useStyles);
@@ -44,7 +47,7 @@ const Header = (props) => {
           <ThemeProvider theme={customTheme}>
           <AppBar position="static" color={"secondary"}>
             <Toolbar>
-              <Typography variant ="h4" className={classes.title} color="#5f6d4f">
+              <Typography variant ="h4" className={classes.title}>
                 Memoryze
               </Typography>
               <div className="DecksButton">
