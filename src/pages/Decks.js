@@ -14,6 +14,7 @@ const Decks = (props) => {
         if (!props.user) {
             history.push('/');
         } else {
+            
             props.firebase.database().ref('users/' + props.user.uid + "/").get().then((objSnapshot) => {
                 let value = objSnapshot.val();
                 deckNames.current = Object.keys(value);
@@ -25,6 +26,7 @@ const Decks = (props) => {
             }).catch((error) => {
                 console.log(error);
             });
+            
         }
     }, []);   
 
@@ -32,6 +34,7 @@ const Decks = (props) => {
     return (
         <div>
             My Decks
+            <Deck deckName={deckNames.current[0]}/>
             <AddDeckButton />
         </div>
     )
