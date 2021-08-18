@@ -1,25 +1,27 @@
 import '../App.css'
+import Deck from '../components/Deck'
 import { Button, Tooltip } from "@material-ui/core";
 import { BiAddToQueue } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useRef } from 'react'
 
 const Decks = (props) => {
     const history = useHistory();
-    let deckNames = new Array();
-    let decks = new Array();
+    const deckNames = useRef([]);
+    const decks = useRef([]);
     useEffect(() => {
         if (!props.user) {
             history.push('/');
         } else {
             props.firebase.database().ref('users/' + props.user.uid + "/").get().then((objSnapshot) => {
                 let value = objSnapshot.val();
-                deckNames = Object.keys(value);
-                console.log(deckNames);
+                deckNames.current = Object.keys(value);
+                //console.log(deckNames.current);
                 objSnapshot.forEach(function (childSnapshot) {
-                    decks.push(childSnapshot.val());
+                    decks.current.push(childSnapshot.val());
                 });
-                // console.log(decks[0][0].backCard);
+                //console.log(decks.current[0][0].backCard);
             }).catch((error) => {
                 console.log(error);
             });
