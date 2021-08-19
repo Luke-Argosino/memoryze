@@ -3,38 +3,37 @@ import Deck from '../components/Deck'
 import { Button, Tooltip } from "@material-ui/core";
 import { BiAddToQueue } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
-import { useEffect } from 'react';
-import { useRef } from 'react'
+import { useState, useRef, useEffect } from 'react';
 
 const Decks = (props) => {
     const history = useHistory();
+    const [isDoneLoading, setDoneLoading] = useState(false);
     const deckNames = useRef([]);
     const decks = useRef([]);
     useEffect(() => {
         if (!props.user) {
             history.push('/');
         } else {
-            
             props.firebase.database().ref('users/' + props.user.uid + "/").get().then((objSnapshot) => {
                 let value = objSnapshot.val();
                 deckNames.current = Object.keys(value);
-                //console.log(deckNames.current);
+                console.log(deckNames.current);
                 objSnapshot.forEach(function (childSnapshot) {
                     decks.current.push(childSnapshot.val());
                 });
-                //console.log(decks.current[0][0].backCard);
+                console.log(decks.current[0][0].backCard);
+                setDoneLoading(true);
             }).catch((error) => {
                 console.log(error);
             });
-            
         }
-    }, []);   
+    }, []);
 
 
     return (
         <div>
             My Decks
-            <Deck deckName={deckNames.current[0]}/>
+            {isDoneLoading && <Deck deckName={deckNames.current[0]}/>}
             <AddDeckButton />
         </div>
     )
