@@ -1,13 +1,13 @@
-import './App.css';
-import AddDeck from './pages/AddDeck';
-import Decks from './pages/Decks';
-import Home from './pages/Home';
-import Header from './components/Header';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import firebase from 'firebase/app';
-import 'firebase/database';
-import 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import "./App.css";
+import AddDeck from "./pages/AddDeck";
+import Decks from "./pages/Decks";
+import Home from "./pages/Home";
+import Header from "./components/Header";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/database";
+import "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 firebase.initializeApp({
   apiKey: "AIzaSyAHXtjVi5seL3M7LyFM0nHvREh2RW9lLJQ",
@@ -15,8 +15,8 @@ firebase.initializeApp({
   projectId: "memoryze-2e0ae",
   storageBucket: "memoryze-2e0ae.appspot.com",
   messagingSenderId: "928044609248",
-  appId: "1:928044609248:web:f02b22960c62e9293caa85"
-})
+  appId: "1:928044609248:web:f02b22960c62e9293caa85",
+});
 
 const auth = firebase.auth();
 
@@ -26,7 +26,7 @@ const App = () => {
     <Router>
       <div className="App">
         <div className="Header">
-          <Header user={user} auth={auth}/>
+          <Header user={user} auth={auth} />
         </div>
         <div className="Content">
           <Switch>
@@ -44,6 +44,6 @@ const App = () => {
       </div>
     </Router>
   );
-}
+};
 
 export default App;
