@@ -29,6 +29,7 @@ const Decks = (props) => {
             deckNames.current.shift();
             decks.current.push(deck);
           });
+          console.log("Gathered Data");
           setDoneLoading(true);
         })
         .catch((error) => {

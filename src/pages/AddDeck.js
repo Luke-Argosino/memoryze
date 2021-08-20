@@ -7,11 +7,13 @@ import { useState } from "react";
 import React from "react";
 
 const AddDeck = (props) => {
+  const currentDate = new Date();
   const history = useHistory();
+  const [newCardsPerday, setNewCardsPerday] = useState(10);
   const [deckName, setDeckName] = useState("");
   const [cardCount, setCardCount] = useState(0);
   const [cards, setCards] = useState([
-    { cardNum: cardCount, frontCard: "", backCard: "" },
+    { cardNum: cardCount, frontCard: "", backCard: "", dueDate: currentDate.toDateString() },
   ]);
 
   const handleSubmit = (e) => {
@@ -19,7 +21,14 @@ const AddDeck = (props) => {
     if (deckName === "") {
       alert("Error: Deck name cannot be empty");
     } else {
-      console.log("Card", cards);
+      //console.log("Card", cards);
+      cards.forEach((card) => {
+        if (((card.cardNum + 1) / newCardsPerday) > 1) {
+          currentDate.setDate((currentDate.getDate() + Math.floor(card.cardNum / newCardsPerday)))
+          const dateString = currentDate.toDateString();
+          card.dueDate = dateString;
+        }
+      })
       props.firebase
         .database()
         .ref("users/" + props.user.uid + "/" + deckName)
@@ -45,7 +54,7 @@ const AddDeck = (props) => {
       setCardCount(cardCount + 1);
       setCards((cards) => [
         ...cards,
-        { cardNum: cardCount, frontCard: "", backCard: "" },
+        { cardNum: cardCount, frontCard: "", backCard: "", dueDate: currentDate.toDateString() },
       ]);
     }
   };
@@ -71,6 +80,13 @@ const AddDeck = (props) => {
           margin="normal"
           onChange={(e) => setDeckName(e.target.value)}
           inputProps={{ maxLength: 40 }}
+        />
+        <TextField
+          label="New Cards per Day"
+          margin="normal"
+          type="number"
+          onChange={(e) => setNewCardsPerday(e.target.value)}
+          inputProps={{ maxLength: 3 }}
         />
         {cards.map((card) => (
           <div key={card.cardNum}>
