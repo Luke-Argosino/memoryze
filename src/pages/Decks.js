@@ -43,7 +43,7 @@ const Decks = (props) => {
       My Decks
       {isDoneLoading &&
         decks.current.map((deck) => (
-          <Deck deckName={deck.deckName} cards={deck.cards} />
+          <Deck deckName={deck.deckName} cards={deck.cards} firebase={props.firebase} user={props.user} />
         ))}
       <AddDeckButton />
     </div>

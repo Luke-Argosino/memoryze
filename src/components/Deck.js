@@ -92,6 +92,14 @@ const Deck = (props) => {
   }, [correctCard]);
 
   const handleCorrectNextCard = () => {
+    const nextDueDate = new Date();
+    if (dueCards[0].timesReviewed === 0) {
+      nextDueDate.setDate(nextDueDate.getDate() + 1);
+    } else {
+      nextDueDate.setDate(nextDueDate.getDate() + (dueCards[0].timesReviewed * 2));
+    }
+    props.firebase.database().ref("users/" + props.user.uid + "/" + props.deckName + "/").child(dueCards[0].cardNum).update({'dueDate': nextDueDate.toDateString()});
+    props.firebase.database().ref("users/" + props.user.uid + "/" + props.deckName + "/").child(dueCards[0].cardNum).update({'timesReviewed': (dueCards[0].timesReviewed + 1)});
     setDueCards(dueCards.filter(item => item !== dueCards[0]));
     setCorrectCard(!correctCard);
   }

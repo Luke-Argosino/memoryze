@@ -13,7 +13,7 @@ const AddDeck = (props) => {
   const [deckName, setDeckName] = useState("");
   const [cardCount, setCardCount] = useState(0);
   const [cards, setCards] = useState([
-    { cardNum: cardCount, frontCard: "", backCard: "", dueDate: currentDate.toDateString() },
+    { cardNum: cardCount, frontCard: "", backCard: "", dueDate: currentDate.toDateString(), timesReviewed: 0,},
   ]);
 
   const handleSubmit = (e) => {
@@ -54,7 +54,7 @@ const AddDeck = (props) => {
       setCardCount(cardCount + 1);
       setCards((cards) => [
         ...cards,
-        { cardNum: cardCount, frontCard: "", backCard: "", dueDate: currentDate.toDateString() },
+        { cardNum: cardCount, frontCard: "", backCard: "", dueDate: currentDate.toDateString(), timesReviewed: 0,},
       ]);
     }
   };
