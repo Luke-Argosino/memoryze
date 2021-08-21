@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 40,
   },
   cardContent: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   buttons: {
     marginTop: "auto",
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     Access deck name:           props.deckName
     ------------------------------------------------------
 */
+
 const Deck = (props) => {
   const classes = useStyles();
   const cards = props.cards;
@@ -46,15 +47,19 @@ const Deck = (props) => {
   const [currentCardNum, setCurrentCardNum] = useState(1);
   const [currentReviewFrontCard, setCurrentReviewFrontCard] = useState();
   const [currentReviewBackCard, setCurrentReviewBackCard] = useState();
-  const [currentCramFrontCard, setCurrentCramFrontCard] = useState(cards[0].frontCard);
-  const [currentCramBackCard, setCurrentCramBackCard] = useState(cards[0].backCard);
+  const [currentCramFrontCard, setCurrentCramFrontCard] = useState(
+    cards[0].frontCard
+  );
+  const [currentCramBackCard, setCurrentCramBackCard] = useState(
+    cards[0].backCard
+  );
   const [backRevealed, setBackRevealed] = useState(false);
 
   useEffect(() => {
-    cards.forEach(card => {
+    cards.forEach((card) => {
       const dueDate = new Date(card.dueDate);
       if (dueDate <= currentDate) {
-        setDueCards(oldArray => [...oldArray, card]);
+        setDueCards((oldArray) => [...oldArray, card]);
       }
     });
   }, []);
@@ -96,13 +101,23 @@ const Deck = (props) => {
     if (dueCards[0].timesReviewed === 0) {
       nextDueDate.setDate(nextDueDate.getDate() + 1);
     } else {
-      nextDueDate.setDate(nextDueDate.getDate() + (dueCards[0].timesReviewed * 2));
+      nextDueDate.setDate(
+        nextDueDate.getDate() + dueCards[0].timesReviewed * 2
+      );
     }
-    props.firebase.database().ref("users/" + props.user.uid + "/" + props.deckName + "/").child(dueCards[0].cardNum).update({'dueDate': nextDueDate.toDateString()});
-    props.firebase.database().ref("users/" + props.user.uid + "/" + props.deckName + "/").child(dueCards[0].cardNum).update({'timesReviewed': (dueCards[0].timesReviewed + 1)});
-    setDueCards(dueCards.filter(item => item !== dueCards[0]));
+    props.firebase
+      .database()
+      .ref("users/" + props.user.uid + "/" + props.deckName + "/")
+      .child(dueCards[0].cardNum)
+      .update({ dueDate: nextDueDate.toDateString() });
+    props.firebase
+      .database()
+      .ref("users/" + props.user.uid + "/" + props.deckName + "/")
+      .child(dueCards[0].cardNum)
+      .update({ timesReviewed: dueCards[0].timesReviewed + 1 });
+    setDueCards(dueCards.filter((item) => item !== dueCards[0]));
     setCorrectCard(!correctCard);
-  }
+  };
 
   const [incorrectCard, setIncorrectCard] = useState(true);
 
@@ -112,14 +127,14 @@ const Deck = (props) => {
       setCurrentReviewBackCard(dueCards[0].backCard);
       setBackRevealed(false);
     }
-  }, [incorrectCard])
+  }, [incorrectCard]);
 
   const handleIncorrectNextCard = () => {
     const backCard = dueCards[0];
-    setDueCards(dueCards.filter(item => item !== dueCards[0]));
-    setDueCards(oldArray => [...oldArray, backCard]);
+    setDueCards(dueCards.filter((item) => item !== dueCards[0]));
+    setDueCards((oldArray) => [...oldArray, backCard]);
     setIncorrectCard(!incorrectCard);
-  }
+  };
 
   const handleCramNextClick = () => {
     if (currentCardNum === cards.length - 1) {
@@ -130,7 +145,7 @@ const Deck = (props) => {
     setCurrentCramFrontCard(cards[currentCardNum].frontCard);
     setCurrentCramBackCard(cards[currentCardNum].backCard);
     setBackRevealed(false);
-  }
+  };
 
   const handleRevealClick = () => setBackRevealed(true);
 
@@ -146,7 +161,7 @@ const Deck = (props) => {
 
   return (
     <div className={classes.root}>
-      <Badge color="primary" badgeContent={dueCards.length} showZero >
+      <Badge color="primary" badgeContent={dueCards.length} showZero>
         <Card>
           <CardContent>
             <Typography variant="h5" component="h2">
@@ -162,32 +177,36 @@ const Deck = (props) => {
                 Cram
               </Button>
 
-
-
               <Dialog onClose={handleReviewClose} open={openReviewDialog}>
-              <DialogTitle className={classes.cardContent}>{currentReviewFrontCard}</DialogTitle>
-                <DialogContent className={classes.cardContent}>{backRevealed ? currentReviewBackCard : "<Hidden>"}</DialogContent>
-                { backRevealed ? 
-                <div>
-                  <Button onClick={handleCorrectNextCard}>
-                    I got it right!
-                  </Button>
-                  <Button onClick={handleIncorrectNextCard}>
-                    I Didn't get it!
-                  </Button>
-                </div>
-                : 
+                <DialogTitle className={classes.cardContent}>
+                  {currentReviewFrontCard}
+                </DialogTitle>
+                <DialogContent className={classes.cardContent}>
+                  {backRevealed ? currentReviewBackCard : "<Hidden>"}
+                </DialogContent>
+                {backRevealed ? (
+                  <div>
+                    <Button onClick={handleCorrectNextCard}>
+                      I got it right!
+                    </Button>
+                    <Button onClick={handleIncorrectNextCard}>
+                      I Didn't get it!
+                    </Button>
+                  </div>
+                ) : (
                   <Button autoFocus onClick={handleRevealClick}>
                     Reveal
                   </Button>
-                }
+                )}
               </Dialog>
 
-
-
               <Dialog onClose={handleCramClose} open={openCramDialog}>
-                <DialogTitle className={classes.cardContent}>{currentCramFrontCard}</DialogTitle>
-                <DialogContent className={classes.cardContent}>{backRevealed ? currentCramBackCard : "<Hidden>"}</DialogContent>
+                <DialogTitle className={classes.cardContent}>
+                  {currentCramFrontCard}
+                </DialogTitle>
+                <DialogContent className={classes.cardContent}>
+                  {backRevealed ? currentCramBackCard : "<Hidden>"}
+                </DialogContent>
                 <Button autoFocus onClick={handleRevealClick}>
                   Reveal
                 </Button>
@@ -195,8 +214,6 @@ const Deck = (props) => {
                   Next Card
                 </Button>
               </Dialog>
-
-
             </CardActions>
           </CardActionArea>
         </Card>

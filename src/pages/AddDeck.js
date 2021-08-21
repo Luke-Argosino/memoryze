@@ -13,7 +13,13 @@ const AddDeck = (props) => {
   const [deckName, setDeckName] = useState("");
   const [cardCount, setCardCount] = useState(0);
   const [cards, setCards] = useState([
-    { cardNum: cardCount, frontCard: "", backCard: "", dueDate: currentDate.toDateString(), timesReviewed: 0,},
+    {
+      cardNum: cardCount,
+      frontCard: "",
+      backCard: "",
+      dueDate: currentDate.toDateString(),
+      timesReviewed: 0,
+    },
   ]);
 
   const handleSubmit = (e) => {
@@ -23,12 +29,14 @@ const AddDeck = (props) => {
     } else {
       //console.log("Card", cards);
       cards.forEach((card) => {
-        if (((card.cardNum + 1) / newCardsPerday) > 1) {
-          currentDate.setDate((currentDate.getDate() + Math.floor(card.cardNum / newCardsPerday)))
+        if ((card.cardNum + 1) / newCardsPerday > 1) {
+          currentDate.setDate(
+            currentDate.getDate() + Math.floor(card.cardNum / newCardsPerday)
+          );
           const dateString = currentDate.toDateString();
           card.dueDate = dateString;
         }
-      })
+      });
       props.firebase
         .database()
         .ref("users/" + props.user.uid + "/" + deckName)
@@ -54,7 +62,13 @@ const AddDeck = (props) => {
       setCardCount(cardCount + 1);
       setCards((cards) => [
         ...cards,
-        { cardNum: cardCount, frontCard: "", backCard: "", dueDate: currentDate.toDateString(), timesReviewed: 0,},
+        {
+          cardNum: cardCount,
+          frontCard: "",
+          backCard: "",
+          dueDate: currentDate.toDateString(),
+          timesReviewed: 0,
+        },
       ]);
     }
   };
