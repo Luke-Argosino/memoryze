@@ -77,24 +77,40 @@ const Deck = (props) => {
 
   const handleCramClose = () => setOpenCramDialog(false);
 
-  const handleCorrectNextCard = () => {
-    setDueCards(dueCards.slice(1));
+  const [correctCard, setCorrectCard] = useState(true);
+
+  useEffect(() => {
     if (dueCards.length === 0) {
-      setCurrentReviewFrontCard("You finished todays reviews! Congrats!");
-      console.log("End of review session");
-    }  else {
+      setCurrentReviewFrontCard("You finished todays reviews!");
+      setCurrentReviewBackCard("Congrats!");
+      setBackRevealed(true);
+    } else {
       setCurrentReviewFrontCard(dueCards[0].frontCard);
       setCurrentReviewBackCard(dueCards[0].backCard);
+      setBackRevealed(false);
     }
-    setBackRevealed(false);
+  }, [correctCard]);
+
+  const handleCorrectNextCard = () => {
+    setDueCards(dueCards.filter(item => item !== dueCards[0]));
+    setCorrectCard(!correctCard);
   }
 
+  const [incorrectCard, setIncorrectCard] = useState(true);
+
+  useEffect(() => {
+    if (dueCards.length !== 0) {
+      setCurrentReviewFrontCard(dueCards[0].frontCard);
+      setCurrentReviewBackCard(dueCards[0].backCard);
+      setBackRevealed(false);
+    }
+  }, [incorrectCard])
+
   const handleIncorrectNextCard = () => {
-    setDueCards(oldArray => [...oldArray, dueCards[0]]);
-    setDueCards(dueCards.slice(1));
-    setCurrentReviewFrontCard(dueCards[0].frontCard);
-    setCurrentReviewBackCard(dueCards[0].backCard);
-    setBackRevealed(false);
+    const backCard = dueCards[0];
+    setDueCards(dueCards.filter(item => item !== dueCards[0]));
+    setDueCards(oldArray => [...oldArray, backCard]);
+    setIncorrectCard(!incorrectCard);
   }
 
   const handleCramNextClick = () => {
@@ -141,7 +157,7 @@ const Deck = (props) => {
 
 
               <Dialog onClose={handleReviewClose} open={openReviewDialog}>
-              <DialogTitle className={classes.cardContent} >{currentReviewFrontCard}</DialogTitle>
+              <DialogTitle className={classes.cardContent}>{currentReviewFrontCard}</DialogTitle>
                 <DialogContent className={classes.cardContent}>{backRevealed ? currentReviewBackCard : "<Hidden>"}</DialogContent>
                 { backRevealed ? 
                 <div>
