@@ -8,6 +8,8 @@ import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { createTheme } from "@material-ui/core";
+import { ThemeProvider } from "styled-components";
 
 firebase.initializeApp({
   apiKey: "AIzaSyAHXtjVi5seL3M7LyFM0nHvREh2RW9lLJQ",
@@ -21,6 +23,7 @@ firebase.initializeApp({
 const auth = firebase.auth();
 
 const App = () => {
+
   const [user] = useAuthState(auth);
   return (
     <Router>

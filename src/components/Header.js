@@ -4,14 +4,15 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import { Button } from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import {
   createTheme,
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,16 +21,18 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  
+  
 }));
 
 const customTheme = createTheme({
-  typography: {
-    fontFamily: ['"Montserrat"', "Open Sans"].join(","),
-  },
   palette: {
-    secondary: {
-      main: "#f7f0dc",
+    primary: {
+      main: "#ffffff",
     },
+    secondary: {
+      main: "#7738c9"
+    }
   },
 });
 
@@ -49,13 +52,13 @@ const Header = (props) => {
     <div className={classes.Root}>
       <div className="Header">
         <ThemeProvider theme={customTheme}>
-          <AppBar position="static" color={"secondary"}>
+          <AppBar position="static" color={"primary"} style={{boxShadow:"none",}}>
             <Toolbar>
-              <Typography variant="h4" className={classes.title}>
+              <Typography variant="h4" className={classes.title} color={"secondary"}>
                 Memoryze
               </Typography>
               <div className="DecksButton">
-                <Button onClick={onDeckClick}>Decks</Button>
+                <Button onClick={onDeckClick} style={{color: '#7738c9', fontWeight: 700}}>Decks</Button>
               </div>
               {props.user ? (
                 <SignOut auth={props.auth} />
@@ -77,7 +80,7 @@ const SignIn = (props) => {
   };
   return (
     <div className="SignButton">
-      <Button onClick={signInWithGoogle}>Sign in with Google</Button>
+      <Button onClick={signInWithGoogle} style={{color: '#7738c9', fontWeight: 700}}>Sign in with Google</Button>
     </div>
   );
 };
@@ -86,7 +89,7 @@ const SignOut = (props) => {
   return (
     props.auth.currentUser && (
       <div className="SignButton">
-        <Button onClick={() => props.auth.signOut()}>Sign Out</Button>
+        <Button onClick={() => props.auth.signOut()} style={{color: '#7738c9', fontWeight: 700}}>Sign Out</Button>
       </div>
     )
   );
